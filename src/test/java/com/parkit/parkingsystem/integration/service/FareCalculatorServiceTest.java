@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.integration.service;
 
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.util.Date;
 
@@ -70,6 +71,20 @@ public class FareCalculatorServiceTest {
     }
 
     @Test
+    public void calculateFareErrorType() {
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.Avion, false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
+
+    }
+
+    @Test
     public void calculateFareBikeWithFutureInTime() {
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() + (60 * 60 * 1000));
@@ -81,6 +96,19 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
         assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
+
+    @Test
+    public void calculateFareWithOutTimeNull() {
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() + (60 * 60 * 1000));
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
+
+        ticket.setInTime(inTime);
+        ticket.setParkingSpot(parkingSpot);
+        assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
+    }
+
+
 
     @Test
     public void calculateFareBikeWithLessThanOneHourParkingTime() {

@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,7 +50,7 @@ public class ParkingDataBaseIT {
     }
 
     @AfterAll
-    public static void tearDown(){
+    public static void tearDown() {
 
     }
 
@@ -68,21 +69,19 @@ public class ParkingDataBaseIT {
 
     @Test
     public void testParkingLotExit() throws Exception {
-            ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-            parkingService.processIncomingVehicle();
+        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+        parkingService.processIncomingVehicle();
 
-            Thread.sleep(500);
-            parkingService.processExitingVehicle();
+        Thread.sleep(500);
+        parkingService.processExitingVehicle();
 
-            String vehicleRegNumber = inputReaderUtil.readVehicleRegistrationNumber();
-            Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
-            Date timeOut = ticket.getOutTime();
-            double price = ticket.getPrice();
+        String vehicleRegNumber = inputReaderUtil.readVehicleRegistrationNumber();
+        Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
+        Date timeOut = ticket.getOutTime();
+        double price = ticket.getPrice();
 
-            assertNotNull(timeOut);
-            assertEquals(0, price);
-        }
-
-
+        assertNotNull(timeOut);
+        assertEquals(0, price);
+    }
 
 }

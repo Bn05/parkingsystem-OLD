@@ -2,5 +2,7 @@ package com.parkit.parkingsystem.constants;
 
 public enum ParkingType {
     CAR,
-    BIKE
+    BIKE,
+
+    Avion // Necessaire pour les tests !! NE PAS UTILISER !!
 }
