@@ -62,4 +62,6 @@ public class ParkingDataBaseIT {
         //TODO: check that the fare generated and out time are populated correctly in the database
     }
 
+
+
 }
