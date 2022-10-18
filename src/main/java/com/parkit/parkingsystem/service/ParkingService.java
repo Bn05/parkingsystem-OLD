@@ -44,7 +44,11 @@ public class ParkingService {
                 ticket.setPrice(0);
                 ticket.setInTime(inTime);
                 ticket.setOutTime(null);
-                ticketDAO.saveTicket(ticket);
+
+                if (!ticketDAO.saveTicket(ticket)){
+                    throw new Exception();
+                }
+
                 System.out.println("Generated Ticket and saved in DB");
                 System.out.println("Please park your vehicle in spot number:" + parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number:" + vehicleRegNumber + " is:" + inTime);
@@ -55,6 +59,7 @@ public class ParkingService {
             }
         } catch (Exception e) {
             logger.error("Unable to process incoming vehicle", e);
+
         }
     }
 
@@ -77,7 +82,7 @@ public class ParkingService {
         } catch (IllegalArgumentException ie) {
             logger.error("Error parsing user input for type of vehicle", ie);
         } catch (Exception e) {
-            logger.error("Error fetching next available parking slot", e);
+            logger.error("Error fetching next available parking slot ", e);
         }
         return parkingSpot;
     }
@@ -97,6 +102,7 @@ public class ParkingService {
             default: {
                 System.out.println("Incorrect input provided");
                 throw new IllegalArgumentException("Entered input is invalid");
+
             }
         }
     }
@@ -121,7 +127,7 @@ public class ParkingService {
                 System.out.println("Please pay the parking fare:" + ticket.getPrice());
                 System.out.println("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
             } else {
-                System.out.println("Unable to update ticket information. Error occurred");
+                throw new Exception("Unable to update ticket information. Error occurred");
             }
         } catch (Exception e) {
             logger.error("Unable to process exiting vehicle", e);

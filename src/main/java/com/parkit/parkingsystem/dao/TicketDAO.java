@@ -18,6 +18,7 @@ public class TicketDAO {
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
     public boolean saveTicket(Ticket ticket) {
+
         Connection con = null;
         try {
             con = dataBaseConfig.getConnection();
@@ -32,10 +33,12 @@ public class TicketDAO {
             return ps.execute();
         } catch (Exception ex) {
             logger.error("Error fetching next available slot", ex);
+            return false;
         } finally {
             dataBaseConfig.closeConnection(con);
-            return false;
+            System.out.println("TEST");
         }
+
     }
 
     public Ticket getTicket(String vehicleRegNumber) {
@@ -63,8 +66,8 @@ public class TicketDAO {
             logger.error("Error fetching next available slot", ex);
         } finally {
             dataBaseConfig.closeConnection(con);
-            return ticket;
         }
+        return ticket;
     }
 
     public boolean updateTicket(Ticket ticket) {
